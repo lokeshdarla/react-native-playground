@@ -1,21 +1,25 @@
 import { View, Text, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Image, Dimensions } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
+import { Movie } from '../constants/constants'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../constants/types'
 import { useNavigation } from '@react-navigation/native'
+
+type Props = NativeStackScreenProps<RootStackParamList>
+type ScreenNavigationProp = Props['navigation']
 
 interface MovieListProps {
   title: string
-  data: number[]
+  data: Movie[]
   hideSeeAll?: boolean
 }
 
 const { width, height } = Dimensions.get('window')
 
 const MovieList: React.FC<MovieListProps> = ({ title, data, hideSeeAll }) => {
-  const movieName = 'Ant man and the wasp'
-  const navigation = useNavigation()
-
-  const handlePress = (index: number) => {
-    navigation.navigate('Movie', { index: index })
+  const navigation = useNavigation<ScreenNavigationProp>()
+  const handlePress = (movieId: number) => {
+    navigation.push('Movie', { MovieId: movieId })
   }
 
   return (
@@ -27,11 +31,11 @@ const MovieList: React.FC<MovieListProps> = ({ title, data, hideSeeAll }) => {
         </TouchableOpacity>
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 15 }}>
-        {data.map((item, index) => (
-          <TouchableWithoutFeedback key={index} onPress={() => handlePress(item)}>
+        {data.map((movie, index) => (
+          <TouchableWithoutFeedback key={index} onPress={() => handlePress(movie.id)}>
             <View className="my-4 mr-4">
-              <Image resizeMode="cover" style={{ width: width * 0.32, height: height * 0.2, borderRadius: 20 }} source={require('../assets/posters/moviePoster1.jpeg')} />
-              <Text className="ml-1 text-center text-gray-200">{movieName.length > 14 ? movieName.slice(0, 14) + '...' : movieName}</Text>
+              <Image resizeMode="cover" style={{ width: width * 0.32, height: height * 0.2, borderRadius: 20 }} source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }} />
+              <Text className="ml-1 text-center text-gray-200">{movie.title.length > 14 ? movie.title.slice(0, 14) + '...' : movie.title}</Text>
             </View>
           </TouchableWithoutFeedback>
         ))}

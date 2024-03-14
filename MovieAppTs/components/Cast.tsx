@@ -18,7 +18,7 @@ const Cast: React.FC<CastProps> = ({ cast }) => {
           cast.map((key, index) => {
             return (
               <TouchableOpacity key={index} className="items-center mr-4" onPress={() => navigation.navigate('Person', { index: 2 })}>
-                <Image className="border border-neutral-400" style={{ width: width * 0.275, height: width * 0.275, borderRadius: 100 }} source={require('../assets/cast1.jpeg')} />
+                <Image style={{ width: width * 0.275, height: width * 0.275, borderRadius: 100 }} source={require('../assets/cast1.jpeg')} />
                 <Text className="mt-2 text-xs text-white">Tom Holland</Text>
                 <Text className="text-xs text-neutral-400 ">Spider Man</Text>
               </TouchableOpacity>
