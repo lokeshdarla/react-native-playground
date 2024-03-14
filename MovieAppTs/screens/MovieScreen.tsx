@@ -6,11 +6,14 @@ import { SafeAreaView } from 'react-native'
 import { ChevronLeftIcon } from 'react-native-heroicons/outline'
 import { HeartIcon } from 'react-native-heroicons/solid'
 import { LinearGradient } from 'expo-linear-gradient'
+import Cast from '../components/Cast'
+import MovieList from '../components/MovieList'
 
 const { width, height } = Dimensions.get('window')
 const ios = Platform.OS == 'ios'
-const topMargin = ios ? '' : ' mt-14'
+const topMargin = ios ? '' : ' mt-3'
 export default function MovieScreen() {
+  const cast = [1, 2, 3, 4, 5]
   const { params: index } = useRoute()
   const [fav, togglefav] = useState('white')
   const navigation = useNavigation()
@@ -55,6 +58,8 @@ export default function MovieScreen() {
             plan.The Avengers must stop Thanos, an intergalactic warlord, from getting his hands on all the infinity stones. However, Thanos is prepared to go to any lengths to carry out his insane
             plan.
           </Text>
+          <Cast cast={cast} />
+          <MovieList title="Similar Movies" hideSeeAll={true} data={cast} />
         </View>
       </View>
     </ScrollView>

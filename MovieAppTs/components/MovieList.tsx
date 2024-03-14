@@ -5,11 +5,12 @@ import { useNavigation } from '@react-navigation/native'
 interface MovieListProps {
   title: string
   data: number[]
+  hideSeeAll?: boolean
 }
 
 const { width, height } = Dimensions.get('window')
 
-const MovieList: React.FC<MovieListProps> = ({ title, data }) => {
+const MovieList: React.FC<MovieListProps> = ({ title, data, hideSeeAll }) => {
   const movieName = 'Ant man and the wasp'
   const navigation = useNavigation()
 
@@ -22,7 +23,7 @@ const MovieList: React.FC<MovieListProps> = ({ title, data }) => {
       <View className="flex-row items-center justify-between mx-4">
         <Text className="text-xl text-white">{title}</Text>
         <TouchableOpacity>
-          <Text className="text-lg text-yellow-500">See All</Text>
+          <Text className="text-lg text-yellow-500">{hideSeeAll ? '' : 'See All'}</Text>
         </TouchableOpacity>
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 15 }}>

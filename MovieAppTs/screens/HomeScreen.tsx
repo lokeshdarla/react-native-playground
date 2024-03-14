@@ -11,7 +11,7 @@ export default function HomeScreen() {
   const [upcoming, setUpcoming] = useState<number[]>([1, 2, 3, 4, 5, 6])
   const [toprated, setToprated] = useState<number[]>([1, 2, 3])
   return (
-    <View className="flex-1 bg-neutral-800">
+    <View className="flex-1 bg-black">
       <Text>Home Screen</Text>
       <SafeAreaView style={ios ? { marginBottom: -2 } : { marginBottom: 3 }}>
         <StatusBar barStyle="light-content" />
