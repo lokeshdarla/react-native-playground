@@ -9,12 +9,17 @@ import { trendingMoviesEndPoint, upcomingMoviesEndPoint, topRatedMoviesEndPoint 
 const ios = Platform.OS === 'ios'
 import axios from 'axios'
 import { Movie, MoviesResponse } from '../constants/constants'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../constants/types'
+
+type Props = NativeStackScreenProps<RootStackParamList>
+type ScreenNavigationProp = Props['navigation']
 export default function HomeScreen() {
   const [trending, setTrending] = useState<Movie[]>([])
   const [upcoming, setUpcoming] = useState<Movie[]>([])
   const [toprated, setToprated] = useState<Movie[]>([])
   const [loading, setLoading] = useState(true)
-
+  const navigation = useNavigation<ScreenNavigationProp>()
   useEffect(() => {
     fetchTrendingMovies()
     fetchupComingMovies()
@@ -64,7 +69,7 @@ export default function HomeScreen() {
           <Text style={{ fontSize: 30, fontWeight: 'bold', color: 'white' }}>
             <Text style={{ color: '#EE4266' }}>M</Text>ovies
           </Text>
-          <TouchableOpacity onPress={() => fetchTrendingMovies()}>
+          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
             <MagnifyingGlassIcon size={30} strokeWidth={2} color="white" />
           </TouchableOpacity>
         </View>

@@ -1,16 +1,43 @@
 import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ScrollView, Dimensions, Image, TouchableWithoutFeedback } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { XMarkIcon } from 'react-native-heroicons/outline'
 import { useNavigation } from '@react-navigation/native'
+import { fetchMovieDetailsByName } from '../api/MovieDb'
+import { Movie } from '../constants/constants'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RootStackParamList } from '../constants/types'
+
+type Props = NativeStackScreenProps<RootStackParamList, 'Person'>
+type ScreenNavigationProp = Props['navigation']
 
 var { width, height } = Dimensions.get('window')
 export default function SearchScreen() {
-  const navigation = useNavigation()
-  const [results, setResults] = useState([1, 2, 3, 4, 5])
+  const navigation = useNavigation<ScreenNavigationProp>()
+  const [results, setResults] = useState<Movie[]>([])
+  const [query, setQuery] = useState<string>('')
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const movieData = await fetchMovieDetailsByName(query)
+        setResults(movieData)
+      } catch (error) {
+        console.error('Error fetching movie details: ', error)
+      }
+    }
+
+    fetchData()
+  }, [query])
+
   return (
     <SafeAreaView className="flex-1 bg-neutral-900">
       <View className="flex-row items-center justify-between mx-4 mt-4 mb-3 border rounded-full border-neutral-400">
-        <TextInput placeholder="Search Movie" placeholderTextColor={'lightgray'} className="flex-1 px-4 py-3 text-base font-semibold tracking-wider text-white" />
+        <TextInput
+          onChangeText={setQuery}
+          value={query}
+          placeholder="Search Movie"
+          placeholderTextColor={'lightgray'}
+          style={{ flex: 1, paddingHorizontal: 25, paddingVertical: 3, fontSize: 16, fontWeight: 'bold', letterSpacing: 1, color: 'white' }}
+        />
         <TouchableOpacity
           onPress={() => {
             navigation.goBack()
@@ -21,15 +48,15 @@ export default function SearchScreen() {
         </TouchableOpacity>
       </View>
       {/* Results */}
-      {results.length > 0 ? (
+      {results?.length > 0 ? (
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 15 }} className="space-y-3">
           <Text className="ml-2 font-semibold text-white">Results ({results.length})</Text>
           <View className="flex-row flex-wrap justify-between">
-            {results.map((result, index) => (
-              <TouchableWithoutFeedback key={index} onPress={() => navigation.navigate('Movie', { index: 2 })}>
+            {results.map((movie, index) => (
+              <TouchableWithoutFeedback key={index} onPress={() => navigation.navigate('Movie', { MovieId: movie?.id })}>
                 <View className="mb-3 space-y-1">
-                  <Image className="rounded-3xl" style={{ width: width * 0.44, height: height * 0.3 }} source={require('../assets/posters/moviePoster1.jpeg')} />
-                  <Text className="ml-1 text-neutral-200">Avengers Endgame</Text>
+                  <Image className="rounded-3xl" style={{ width: width * 0.44, height: height * 0.3 }} source={{ uri: `https://image.tmdb.org/t/p/w500${movie?.poster_path}` }} />
+                  <Text className="ml-1 text-neutral-200">{movie.title.length > 15 ? movie.title.slice(0, 15) + '...' : movie.title}</Text>
                 </View>
               </TouchableWithoutFeedback>
             ))}

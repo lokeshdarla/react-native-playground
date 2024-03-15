@@ -39,6 +39,24 @@ const fetchSimilarMovieDetails = async (id:number) => {
 
 
 
+const fetchMovieDetailsByName = async (movieTitle:string) => {
+  try {
+    const MovieDetailsEndPoint = `https://api.themoviedb.org/3/search/movie?query=${movieTitle}&api_key=${API_BASE_KEY}`;
+    const response = await axios.get(MovieDetailsEndPoint);
+    return response.data.results ;
+  } catch (error) {
+    console.error('Error fetching movie by name details:', error);
+    return null;
+  }
+};
+
+
+
+
+
+
+
+
 const fetchMovieCredits = async (id:number) => {
   try {
     const MovieDetailsEndPoint = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${API_BASE_KEY}`;
@@ -77,6 +95,6 @@ const fetchActorMovies = async (id: number) => {
 };
 
 
-export { trendingMoviesEndPoint, upcomingMoviesEndPoint, topRatedMoviesEndPoint,fetchMovieDetails,fetchSimilarMovieDetails ,fetchMovieCredits,fetchActorDetails,fetchActorMovies};
+export { trendingMoviesEndPoint, upcomingMoviesEndPoint, topRatedMoviesEndPoint,fetchMovieDetails,fetchSimilarMovieDetails ,fetchMovieCredits,fetchActorDetails,fetchActorMovies,fetchMovieDetailsByName};
 
 
