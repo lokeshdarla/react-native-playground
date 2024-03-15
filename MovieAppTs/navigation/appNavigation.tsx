@@ -15,7 +15,7 @@ const AppNavigation: React.FC = () => {
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" options={{ headerShown: false }} component={HomeScreen} />
         <Stack.Screen name="Movie" options={{ headerShown: false }} component={MovieScreen} initialParams={{ MovieId: 0 }} />
-        <Stack.Screen name="Person" options={{ headerShown: false }} component={PersonScreen} initialParams={{ index: 0 }} />
+        <Stack.Screen name="Person" options={{ headerShown: false }} component={PersonScreen} initialParams={{ PersonId: 0 }} />
         <Stack.Screen name="Search" options={{ headerShown: false }} component={SearchScreen} />
       </Stack.Navigator>
     </NavigationContainer>

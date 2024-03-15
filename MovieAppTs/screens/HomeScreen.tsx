@@ -10,7 +10,6 @@ const ios = Platform.OS === 'ios'
 import axios from 'axios'
 import { Movie, MoviesResponse } from '../constants/constants'
 export default function HomeScreen() {
-  const navigation = useNavigation()
   const [trending, setTrending] = useState<Movie[]>([])
   const [upcoming, setUpcoming] = useState<Movie[]>([])
   const [toprated, setToprated] = useState<Movie[]>([])

@@ -14,7 +14,7 @@ interface TrendingMoviesProps {
 type Props = NativeStackScreenProps<RootStackParamList>
 type ScreenNavigationProp = Props['navigation']
 
-const TrendingMovies: React.FC<TrendingMoviesProps & ScreenNavigationProp> = ({ data }) => {
+const TrendingMovies: React.FC<TrendingMoviesProps> = ({ data }) => {
   const navigation = useNavigation<ScreenNavigationProp>()
   const handleClick = (index: number) => {
     navigation.push('Movie', { MovieId: index })

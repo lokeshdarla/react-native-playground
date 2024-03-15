@@ -6,11 +6,11 @@ import { HeartIcon } from 'react-native-heroicons/solid'
 import { LinearGradient } from 'expo-linear-gradient'
 import Cast from '../components/Cast'
 import MovieList from '../components/MovieList'
-import { fetchMovieDetails } from '../api/MovieDb'
+import { fetchMovieCredits, fetchMovieDetails, fetchSimilarMovieDetails } from '../api/MovieDb'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../constants/types'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { MovieDetails } from '../constants/constants'
+import { MovieDetails, Movie, Actor } from '../constants/constants'
 
 const { width, height } = Dimensions.get('window')
 const ios = Platform.OS == 'ios'
@@ -23,8 +23,9 @@ type ScreenRouteProp = Props['route']
 const MovieScreen: React.FC<Props> = () => {
   const route = useRoute<ScreenRouteProp>()
   const [movie, setMovie] = useState<MovieDetails>()
+  const [similar, setSimilar] = useState<Movie[]>([])
+  const [cast, setCast] = useState<Actor[]>([])
   const navigation = useNavigation<ScreenNavigationProp>()
-  const cast = [1, 2, 3, 4, 5]
   const { MovieId } = route.params
   const [fav, togglefav] = useState('white')
 
@@ -32,6 +33,10 @@ const MovieScreen: React.FC<Props> = () => {
     const fetchData = async () => {
       const data = await fetchMovieDetails(MovieId)
       setMovie(data)
+      const similarData = await fetchSimilarMovieDetails(MovieId)
+      setSimilar(similarData.results)
+      const castData = await fetchMovieCredits(MovieId)
+      setCast(castData.cast)
     }
 
     fetchData()
@@ -81,7 +86,7 @@ const MovieScreen: React.FC<Props> = () => {
 
           <Text className="mx-4 tracking-wider text-neutral-300 text-start">{movie?.overview}</Text>
           <Cast cast={cast} />
-          {/* <MovieList title="Similar Movies" hideSeeAll={true} data={cast} /> */}
+          <MovieList title="Similar Movies" hideSeeAll={true} data={similar} />
         </View>
       </View>
     </ScrollView>

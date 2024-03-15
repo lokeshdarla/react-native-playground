@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Image, Dimensions } from 'react-native'
 import React, { useState } from 'react'
-import { Movie } from '../constants/constants'
+import { ActorMovie, Movie } from '../constants/constants'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from '../constants/types'
 import { useNavigation } from '@react-navigation/native'
@@ -10,13 +10,13 @@ type ScreenNavigationProp = Props['navigation']
 
 interface MovieListProps {
   title: string
-  data: Movie[] | null
+  data: ActorMovie[]
   hideSeeAll?: boolean
 }
 
 const { width, height } = Dimensions.get('window')
 
-const MovieList: React.FC<MovieListProps> = ({ title, data, hideSeeAll }) => {
+const ActorMovieList: React.FC<MovieListProps> = ({ title, data, hideSeeAll }) => {
   const navigation = useNavigation<ScreenNavigationProp>()
   const handlePress = (movieId: number) => {
     navigation.push('Movie', { MovieId: movieId })
@@ -44,4 +44,4 @@ const MovieList: React.FC<MovieListProps> = ({ title, data, hideSeeAll }) => {
   )
 }
 
-export default MovieList
+export default ActorMovieList
